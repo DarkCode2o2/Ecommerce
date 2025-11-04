@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\Pages\CreateUser;
 use App\Filament\Resources\UserResource\RelationManagers;
+use App\Filament\Resources\UserResource\RelationManagers\OrdersRelationManager;
 use App\Models\User;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms;
@@ -12,6 +13,7 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\Page;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -24,6 +26,11 @@ class UserResource extends Resource
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
+
+    protected static ?string $recordTitleAttribute = 'name';
+
+    protected static ?int $navigationSort = 2;
+
 
     public static function form(Form $form): Form
     {
@@ -83,9 +90,14 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            OrdersRelationManager::class,
         ];
     }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['name', 'email'];
+    } 
 
     public static function getPages(): array
     {
